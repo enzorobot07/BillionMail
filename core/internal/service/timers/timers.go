@@ -179,6 +179,10 @@ func Start(ctx context.Context) (err error) {
 		}
 	})
 
+	gtimer.AddOnce(1*time.Minute, func() {
+		relay.EnsurePostfixConfExists(ctx)
+	})
+
 	g.Log().Debug(ctx, "All timers started successfully")
 	return nil
 }
