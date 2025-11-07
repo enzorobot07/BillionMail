@@ -118,7 +118,7 @@ export const checkAiConfiguration = () => {
 export const checkDomainBlacklist = (params: { a_record: string }) => {
 	return instance.post('/domain_blocklist/check', params, {
 		fetchOptions: {
-			loading: '正在检测，请稍候...',
+			loading: 'Detecting, please wait...',
 			successMessage: true,
 		},
 	})
