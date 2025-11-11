@@ -136,7 +136,7 @@ const props = withDefaults(defineProps<Props>(), {
 	trimWhitespace: true,
 	// 虚拟滚动默认配置
 	enableVirtualScroll: true,
-	itemHeight: 21, // 每行高度（px）
+	itemHeight: 22, // 每行高度（px）
 	overscan: 5, // 预渲染行数
 	virtualScrollThreshold: 200, // 超过多少行启用虚拟滚动
 	// 默认滚动到底部
@@ -793,7 +793,7 @@ const lineNumberWidth = computed(() => {
 	background: transparent !important;
 	font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
 	font-size: 13px;
-	line-height: 1.6;
+	line-height: 1.5;
 	box-sizing: border-box;
 
 	&.word-wrap {
