@@ -1197,13 +1197,19 @@ func (e *TaskExecutor) sendEmail(ctx context.Context, task *entity.EmailTask, re
 	// set message ID
 	messageID := sender.GenerateMessageID()
 
-	//Tracking emails
-	//baseURL := domains.GetBaseURLBySender(currentTask.Addresser)
-	baseURL := domains.GetBaseURL()
-	mail_tracker := maillog_stat.NewMailTracker(renderedContent, currentTask.Id, messageID, recipient.Recipient, baseURL)
-	mail_tracker.TrackLinks()
-	mail_tracker.AppendTrackingPixel()
-	renderedContent = mail_tracker.GetHTML()
+	//Tracking emails - only if enabled
+	if currentTask.TrackClick == 1 || currentTask.TrackOpen == 1 {
+		//baseURL := domains.GetBaseURLBySender(currentTask.Addresser)
+		baseURL := domains.GetBaseURL()
+		mail_tracker := maillog_stat.NewMailTracker(renderedContent, currentTask.Id, messageID, recipient.Recipient, baseURL)
+		if currentTask.TrackClick == 1 {
+			mail_tracker.TrackLinks()
+		}
+		if currentTask.TrackOpen == 1 {
+			mail_tracker.AppendTrackingPixel()
+		}
+		renderedContent = mail_tracker.GetHTML()
+	}
 
 	// create email message with rendered subject
 	message := mail_service.NewMessage(renderedSubject, renderedContent)
@@ -1266,13 +1272,19 @@ func (e *TaskExecutor) sendEmailMock(ctx context.Context, task *entity.EmailTask
 	// Set message ID
 	messageID := sender.GenerateMessageID()
 
-	// Track email
-	//baseURL := domains.GetBaseURLBySender(task.Addresser)
-	baseURL := domains.GetBaseURL()
-	mail_tracker := maillog_stat.NewMailTracker(renderedContent, task.Id, messageID, recipient.Recipient, baseURL)
-	mail_tracker.TrackLinks()
-	mail_tracker.AppendTrackingPixel()
-	renderedContent = mail_tracker.GetHTML()
+	// Track email - only if enabled
+	if task.TrackClick == 1 || task.TrackOpen == 1 {
+		//baseURL := domains.GetBaseURLBySender(task.Addresser)
+		baseURL := domains.GetBaseURL()
+		mail_tracker := maillog_stat.NewMailTracker(renderedContent, task.Id, messageID, recipient.Recipient, baseURL)
+		if task.TrackClick == 1 {
+			mail_tracker.TrackLinks()
+		}
+		if task.TrackOpen == 1 {
+			mail_tracker.AppendTrackingPixel()
+		}
+		renderedContent = mail_tracker.GetHTML()
+	}
 
 	// Create email message with rendered subject
 	message := mail_service.NewMessage(renderedSubject, renderedContent)

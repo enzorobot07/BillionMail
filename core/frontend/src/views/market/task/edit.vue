@@ -399,8 +399,8 @@ const getParams = () => {
 		startTime = Date.now()
 	}
 	return {
-		track_open: 1,
-		track_click: 1,
+		track_open: 0,
+		track_click: 0,
 		addresser: form.addresser || '',
 		full_name: form.full_name,
 		subject: form.subject,
