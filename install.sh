@@ -1357,6 +1357,14 @@ EOF
         ls -al
         Red_Error "docker-compose.yml not found."
     fi
+    
+    # Build custom core image
+    echo -e "Building custom core image..."
+    bash build_core.sh
+    if [ $? -ne 0 ]; then
+        Red_Error "Failed to build core binary"
+    fi
+    
     ${DOCKER_COMPOSE} pull
     ${DOCKER_COMPOSE} up -d
     if [ $? -eq 0 ]; then
