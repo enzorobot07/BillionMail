@@ -503,7 +503,7 @@ func processMailContentAndSubject(ctx context.Context, content, subject string, 
 		if contact.GroupId > 0 {
 			unsubscribeJumpURL = fmt.Sprintf("%s/unsubscribe_new.html?jwt=%s",
 				domain, jwtToken)
-		
+
 		} else {
 			unsubscribeURL := fmt.Sprintf("%s/api/unsubscribe", domain)
 			groupURL := fmt.Sprintf("%s/api/unsubscribe/user_group", domain)
