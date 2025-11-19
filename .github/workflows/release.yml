@@ -1,0 +1,38 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Set up Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: '1.21'
+    
+    - name: Build binaries
+      run: |
+        cd core
+        CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o billionmail-amd64
+        CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -o billionmail-arm64
+    
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          core/billionmail-amd64
+          core/billionmail-arm64
+        generate_release_notes: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

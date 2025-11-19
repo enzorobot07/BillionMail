@@ -1,0 +1,36 @@
+name: Build Core Binary
+
+on:
+  push:
+    branches: [ dev, main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    strategy:
+      matrix:
+        arch: [amd64, arm64]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Set up Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: '1.21'
+    
+    - name: Build binary
+      run: |
+        cd core
+        CGO_ENABLED=0 GOOS=linux GOARCH=${{ matrix.arch }} go build -o billionmail-${{ matrix.arch }}
+    
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: billionmail-${{ matrix.arch }}
+        path: core/billionmail-${{ matrix.arch }}
+        retention-days: 90
