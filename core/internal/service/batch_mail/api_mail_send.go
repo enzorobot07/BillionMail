@@ -333,10 +333,17 @@ func sendApiMailWithSender(ctx context.Context, apiTemplate *entity.ApiTemplates
 	//baseURL := domains.GetBaseURLBySender(log.Addresser)
 	baseURL := domains.GetBaseURL()
 	apiTemplate_id := apiTemplate.Id + 1000000000
-	mailTracker := maillog_stat.NewMailTracker(content, apiTemplate_id, messageId, log.Recipient, baseURL)
-	mailTracker.TrackLinks()
-	mailTracker.AppendTrackingPixel()
-	content = mailTracker.GetHTML()
+	// Track email - only if enabled
+	if apiTemplate.TrackClick == 1 || apiTemplate.TrackOpen == 1 {
+		mailTracker := maillog_stat.NewMailTracker(content, apiTemplate_id, messageId, log.Recipient, baseURL)
+		if apiTemplate.TrackClick == 1 {
+			mailTracker.TrackLinks()
+		}
+		if apiTemplate.TrackOpen == 1 {
+			mailTracker.AppendTrackingPixel()
+		}
+		content = mailTracker.GetHTML()
+	}
 
 	message := mail_service.NewMessage(subject, content)
 	message.SetMessageID(messageId)
@@ -428,10 +435,17 @@ func sendApiMail(ctx context.Context, apiTemplate *entity.ApiTemplates, subject 
 	//baseURL := domains.GetBaseURLBySender(log.Addresser)
 	baseURL := domains.GetBaseURL()
 	apiTemplate_id := apiTemplate.Id + 1000000000
-	mailTracker := maillog_stat.NewMailTracker(content, apiTemplate_id, messageId, log.Recipient, baseURL)
-	mailTracker.TrackLinks()
-	mailTracker.AppendTrackingPixel()
-	content = mailTracker.GetHTML()
+	// Track email - only if enabled
+	if apiTemplate.TrackClick == 1 || apiTemplate.TrackOpen == 1 {
+		mailTracker := maillog_stat.NewMailTracker(content, apiTemplate_id, messageId, log.Recipient, baseURL)
+		if apiTemplate.TrackClick == 1 {
+			mailTracker.TrackLinks()
+		}
+		if apiTemplate.TrackOpen == 1 {
+			mailTracker.AppendTrackingPixel()
+		}
+		content = mailTracker.GetHTML()
+	}
 
 	// create email message
 	message := mail_service.NewMessage(subject, content)
