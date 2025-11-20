@@ -147,8 +147,8 @@ type CreateTaskReq struct {
 	IsRecord      int    `json:"is_record" v:"in:0,1" dc:"is record" default:"1"`
 	Unsubscribe   int    `json:"unsubscribe" v:"in:0,1" dc:"unsubscribe" default:"1"`
 	Threads       int    `json:"threads" v:"min:0" dc:"threads" default:"5"`
-	TrackOpen     int    `json:"track_open" v:"in:0,1" dc:"track open" default:"1"`
-	TrackClick    int    `json:"track_click" v:"in:0,1" dc:"track click" default:"1"`
+	TrackOpen     int    `json:"track_open" v:"in:0,1" dc:"track open" default:"0"`
+	TrackClick    int    `json:"track_click" v:"in:0,1" dc:"track click" default:"0"`
 	StartTime     int    `json:"start_time" v:"required" dc:"start time"`
 	Warmup        int    `json:"warmup" v:"in:0,1" dc:"warmup" default:"0"`
 	Remark        string `json:"remark" dc:"remark"`

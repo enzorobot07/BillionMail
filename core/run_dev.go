@@ -1,3 +1,6 @@
+// This file is for development only and should not be included in production builds
+//go:build dev || (!exclude_dev && !prod)
+
 package main
 
 import (
