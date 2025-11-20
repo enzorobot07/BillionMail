@@ -1,0 +1,49 @@
+name: Create Release Tag
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Tag name (e.g., v1.0.0)'
+        required: true
+        default: 'v1.0.0'
+      tag_message:
+        description: 'Tag message'
+        required: false
+        default: 'Release version'
+
+jobs:
+  create-tag:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: Configure Git
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+    
+    - name: Create and push tag
+      run: |
+        TAG_NAME="${{ github.event.inputs.tag_name }}"
+        TAG_MESSAGE="${{ github.event.inputs.tag_message }}"
+        
+        # Check if tag already exists
+        if git rev-parse "$TAG_NAME" >/dev/null 2>&1; then
+          echo "Error: Tag $TAG_NAME already exists"
+          exit 1
+        fi
+        
+        # Create annotated tag
+        git tag -a "$TAG_NAME" -m "$TAG_MESSAGE"
+        
+        # Push tag to trigger release workflow
+        git push origin "$TAG_NAME"
+        
+        echo "Successfully created and pushed tag: $TAG_NAME"
