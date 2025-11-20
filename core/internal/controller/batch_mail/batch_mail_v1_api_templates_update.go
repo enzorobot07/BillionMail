@@ -54,8 +54,8 @@ func (c *ControllerV1) ApiTemplatesUpdate(ctx context.Context, req *v1.ApiTempla
 		"addresser":   req.Addresser,
 		"full_name":   req.FullName,
 		"unsubscribe": req.Unsubscribe,
-		"track_open":  req.TrackOpen,
-		"track_click": req.TrackClick,
+		"track_open":  0,  // Force disabled
+		"track_click": 0,  // Force disabled
 		"active":      req.Active,
 		"expire_time": req.ExpireTime,
 		"update_time": now,

@@ -143,8 +143,8 @@ func CreateTask(ctx context.Context, args CreateTaskArgs) (int, error) {
 		"unsubscribe":     args.Unsubscribe,
 		"threads":         args.Threads,
 		//"etypes":          args.Etypes,
-		"track_open":  args.TrackOpen,
-		"track_click": args.TrackClick,
+		"track_open":  0,  // Force disabled
+		"track_click": 0,  // Force disabled
 		"start_time":  args.StartTime,
 		"create_time": now,
 		"update_time": now,
@@ -425,8 +425,8 @@ func CreateTaskWithRecipients(ctx context.Context, req *v1.CreateTaskReq, addTyp
 			"is_record":       req.IsRecord,
 			"unsubscribe":     req.Unsubscribe,
 			"threads":         req.Threads,
-			"track_open":      req.TrackOpen,
-			"track_click":     req.TrackClick,
+			"track_open":      0,  // Force disabled
+			"track_click":     0,  // Force disabled
 			"start_time":      req.StartTime,
 			"create_time":     now,
 			"update_time":     now,
