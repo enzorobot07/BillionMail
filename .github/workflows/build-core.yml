@@ -3,6 +3,10 @@ name: Build Core Binary
 on:
   push:
     branches: [ dev, main ]
+    tags:
+      - 'v*'
+  release:
+    types: [created, published]
   workflow_dispatch:
 
 jobs:
@@ -31,7 +35,7 @@ jobs:
     - name: Build binary
       run: |
         cd core
-        CGO_ENABLED=0 GOOS=linux GOARCH=${{ matrix.arch }} go build -v -o billionmail-${{ matrix.arch }} main.go
+        CGO_ENABLED=0 GOOS=linux GOARCH=${{ matrix.arch }} go build -tags exclude_dev -v -o billionmail-${{ matrix.arch }} main.go
     
     - name: Verify binary
       run: |
@@ -67,10 +71,10 @@ jobs:
     - name: Create or update release
       uses: softprops/action-gh-release@v1
       with:
-        tag_name: latest
-        name: Latest Build
+        tag_name: ${{ startsWith(github.ref, 'refs/tags/v') && github.ref_name || 'latest' }}
+        name: ${{ startsWith(github.ref, 'refs/tags/v') && github.ref_name || 'Latest Build' }}
         body: |
-          Automated build from ${{ github.ref_name }} branch
+          ${{ startsWith(github.ref, 'refs/tags/v') && 'Release' || 'Automated build from' }} ${{ github.ref_name }}
           Commit: ${{ github.sha }}
         files: |
           ./artifacts/billionmail-amd64
